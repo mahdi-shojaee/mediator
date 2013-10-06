@@ -12,37 +12,48 @@ This approach is not like the jQueries $.when() that ignores the remaining promi
 How to use?
 -----------
 
-mediator.publish(channel[, arg1[, arg2[, ...]]]);
 
-channel
-Type: String
-Any string as the mediator channel name.
+###mediator.subscribe
 
-arg1,...argN (Optional)
-Type: any JavaScript valid type
-The arguments that will be passing to the registered subscribers.
-
-returns
-A promise of all the returned promises of subscribers.
-
+```javascript
 mediator.subscribe(channel, callback[, context]);
+```
 
-channel
-Type: String
+**channel**  
+*Type*: String  
 Any string as the mediator channel name.
 
-callback
-Type: Function
+**callback**  
+*Type*: Function  
 Callback function that invokes on a publish with the specified channel.
 All the parameters that passed to publish method will be arguments of this callback function.
 
-context (Optional)
-Type: any JavaScript valid type
+**context** *(Optional)*  
+*Type*: any JavaScript valid type  
 The context of the callback function.
+
+
+###mediator.publish
+
+```javascript
+mediator.publish(channel[, arg1[, arg2[, ...]]]);
+```
+
+**channel**  
+*Type*: String  
+Any string as the mediator channel name.
+
+**arg1,...argN** *(Optional)*  
+*Type*: any JavaScript valid type  
+The arguments that will be passing to the registered subscribers.
+
+**returns**  
+A promise of all the returned promises of subscribers.
 
 Example
 -------
 
+```javascript
 // In a sub module:
 mediator.subscribe('app:refresh', function () {
 	return $.ajax({...});
@@ -59,11 +70,10 @@ mediator.subscribe('app:refresh', function () {
 	// Do not return any promise.
 });
 
-
-
 // In the main module:
 mediator.publish('app:refresh', ...).then(function () {
 	// All the promises returned from some of subscribers, resolved.
 }, function () {
 	// One of the promises returned from some of subscribers, rejected.
 });
+```
