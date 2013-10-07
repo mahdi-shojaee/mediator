@@ -82,7 +82,7 @@ mediator.subscribe('app:refresh', function () {
 	return $.ajax({...});
 });
 
-// In Module B
+// In module B
 mediator.subscribe('app:refresh', function () {
 	return $.ajax({...});
 });
