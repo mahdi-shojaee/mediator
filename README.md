@@ -59,14 +59,14 @@ A reference of the callback that passed to the subscribe method.
 Dispatch data over the specified channel and returns a promise of all the promises returned from subscribers callbacks. If a promise fails, the result promise will not be reject and continue waiting for other promises. The result promise will be resolve if the return of all the subscribers resolves, and rejects otherwise.
 
 ```javascript
-mediator.publish(channel[, arg1[, arg2[, ...]]]);
+mediator.publish(channel[, arg1[, arg2[, ...[, argN]]]]);
 ```
 
 **channel**  
 *Type*: String  
 Any string as the mediator channel name.
 
-**arg1,...argN** *(Optional)*  
+**arg1, ..., argN** *(Optional)*  
 *Type*: any JavaScript valid type  
 The arguments that will be passing to the registered subscribers.
 
