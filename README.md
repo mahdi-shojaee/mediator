@@ -4,9 +4,9 @@ mediator
 Another implementation of mediator pattern in JavaScript. This implementation uses the deferred objects of the jQuery library in its publish method.
 
 There are some cases that a publisher wants to know when all the subscribers of a specific channel complete their asynchronous tasks, without any knowledge of its subscribers.
-The publish method of this library returns a promise of all the returned promises of subscribers that do a asynchronous task and want to inform the publisher about this task's completion. The returned promise of the publish method resolves on completion of all the subscribers promises (resolve and reject). In other hand if a subscriber returns a promise that rejects later, the publish method of the publisher do not ignore the remaining promises. 
+The publish method of this library returns a promise of all the returned promises of subscribers that do a asynchronous task and want to inform the publisher about completion of their task. The returned promise of the publish method resolves on completion of all the subscribers promises (resolve and reject). In other hand if a subscriber returns a promise that rejects later, the publish method of the publisher do not ignore the remaining promises. 
 
-This approach is not like the jQueries $.when() that ignores the remaining promises immediately if any of the promises rejects.
+This approach is not like the jQuery.when() that ignores the remaining promises immediately if any of the promises rejects.
 
 
 How to use?
@@ -56,7 +56,7 @@ A reference of the callback that passed to the subscribe method.
 
 ###mediator.publish
 
-Dispatch data over the specified channel and return a promise of all the promises that returned from subscribers. The returned promise from this method completes when all the promises returned from subscribers complete but if any of the subscribers returned promises fails, this promise will be also files.
+Dispatch data over the specified channel and returns a promise of all the promises returned from subscribers callbacks. If a promise fails, the result promise will not be reject and continue waiting for other promises. The result promise will be resolve if the return of all the subscribers resolves, and rejects otherwise.
 
 ```javascript
 mediator.publish(channel[, arg1[, arg2[, ...]]]);
