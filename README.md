@@ -69,7 +69,7 @@ mediator.publish(channel[, arg1[, arg2[, ...[, argN]]]]);
 *Type*: String  
 Any string as the mediator channel name.
 
-**argN** *(Optional)*  
+**arg1, ..., argN** *(Optional)*  
 *Type*: any JavaScript valid type  
 The arguments that will be passing to the registered subscribers.
 
