@@ -7,8 +7,7 @@ There are some cases that a publisher wants to know when all the subscribers of 
 
 This approach is not like the jQuery.when() that ignores the remaining promises immediately if any of the promises rejects.
 
-Dependencies
-------------
+###Dependencies
 
 This implementation depends on jQuery for it's deferred objects.
 
