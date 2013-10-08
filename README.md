@@ -1,11 +1,16 @@
 mediator
 ========
 
-Another implementation of mediator pattern in JavaScript. This implementation uses the deferred objects of the jQuery library in its `publish` method.
+Another implementation of mediator pattern in JavaScript that the `publish` method returns a promise object that informs the publisher when all the subscribers completed their asynchronous or synchronous tasks.
 
 There are some cases that a publisher wants to know when all the subscribers of a specific channel complete their asynchronous tasks while the publisher does not any knowledge about its subscribers. The `publish` method of this library returns a promise of all the returned promises of subscribers that do an asynchronous task and want to inform the publisher about completion of the task. The returned promise of the `publish` method resolves or rejects on completion of all the subscribers promises (resolve or reject). In other hand if a subscriber returns a promise that rejects later, the `publish` method of the publisher do not ignore the remaining promises. 
 
 This approach is not like the jQuery.when() that ignores the remaining promises immediately if any of the promises rejects.
+
+Dependencies
+------------
+
+This implementation depends on jQuery for it's deferred objects.
 
 
 How to use?
@@ -65,7 +70,7 @@ mediator.publish(channel[, arg1[, arg2[, ...[, argN]]]]);
 *Type*: String  
 Any string as the mediator channel name.
 
-**arg1, ..., argN** *(Optional)*  
+**argN** *(Optional)*  
 *Type*: any JavaScript valid type  
 The arguments that will be passing to the registered subscribers.
 
