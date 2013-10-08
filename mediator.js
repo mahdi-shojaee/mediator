@@ -1,4 +1,4 @@
-(function ($, window, undefined) {
+(function (window, undefined) {
 	var mediator = {},
 		cache = {};
 
@@ -103,4 +103,4 @@
 			define("mediator", [], function () { return mediator; });
 		}
 	}
-})(jQuery, window);
+})(window);
