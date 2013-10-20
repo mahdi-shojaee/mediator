@@ -59,38 +59,50 @@
 		return deferred.promise();
 	};
 
-	mediator.subscribe = function (channel, callback, context) {
-		if (!cache[channel]) {
-			cache[channel] = [];
-		}
+	mediator.subscribe = function (channels, callback, context) {
+		channels = channels.split(/\s+/) || [];
 
-		cache[channel].push({ callback: callback, context: context });
+		for (var i = 0, len = channels.length; i < len; i++) {
+			var channel = channels[i];
+
+			if (!cache[channel]) {
+				cache[channel] = [];
+			}
+
+			cache[channel].push({ callback: callback, context: context });
+		}
 	};
 
-	mediator.unsubscribe = function (channel, callback) {
-		if (!callback) {
-			delete cache[channel];
-			return;
-		}
+	mediator.unsubscribe = function (channels, callback) {
+		channels = channels.split(/\s+/) || [];
 
-		var subscribers = cache[channel];
+		for (var i = 0, len = channels.length; i < len; i++) {
+			var channel = channels[i];
 
-		if (!subscribers) {
-			throw 'Channel "' + channel + '" was not subscribed previously!';
-		}
-
-		var newSubscribers = [];
-
-		for (var i = 0, len = subscribers.length; i < len; i++) {
-			if (subscribers[i] !== callback) {
-				newSubscribers.push(subscribers[i]);
+			if (!callback) {
+				delete cache[channel];
+				return;
 			}
-		}
 
-		if (newSubscribers.length > 0) {
-			cache[channel] = newSubscribers;
-		} else {
-			delete cache[channel];
+			var subscribers = cache[channel];
+
+			if (!subscribers) {
+				throw 'Channel "' + channel + '" was not subscribed previously!';
+			}
+
+			var newSubscribers = [];
+
+			for (var i = 0, len = subscribers.length; i < len; i++) {
+				if (subscribers[i].callback !== callback) {
+					newSubscribers.push(subscribers[i]);
+				}
+			}
+
+			if (newSubscribers.length > 0) {
+				cache[channel] = newSubscribers;
+			} else {
+				delete cache[channel];
+			}
 		}
 	};
 

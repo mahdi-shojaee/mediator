@@ -22,12 +22,12 @@ Add a subscriber callback for the channel that will be called with the specified
 If context is not specified, mediator itself will be use.
 
 ```javascript
-mediator.subscribe(channel, callback[, context]);
+mediator.subscribe(channels, callback[, context]);
 ```
 
-**channel**  
+**channels**  
 *Type*: String  
-Any string as the mediator channel name.
+A white space delimited string as the mediator channel names.
 
 **callback**  
 *Type*: Function  
@@ -41,16 +41,16 @@ The context of the callback function.
 
 ###mediator.unsubscribe
 
-Remove all subscribers of a channel with the specified callback.
-If callback is not specified, all the subscribers of the channel will be remove.
+Remove all subscribers of the channels with the specified callback.
+If callback is not specified, all the subscribers of the channels will be remove.
 
 ```javascript
-mediator.unsubscribe(channel[, callback])
+mediator.unsubscribe(channels[, callback])
 ```
 
-**chanel**  
+**chanels**  
 *Type*: String  
-Any string as the mediator channel name.
+A white space delimited string as the mediator channel names.
 
 **callback** *(Optional)*  
 *Type*: Function  
