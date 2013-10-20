@@ -26,8 +26,8 @@ mediator.subscribe(channels, callback[, context]);
 ```
 
 **channels**  
-*Type*: String  
-A white space delimited string as the mediator channel names.
+*Type*: String or Array of Strings  
+An Array of strings or a white space delimited string as the mediator channel names.
 
 **callback**  
 *Type*: Function  
@@ -49,8 +49,8 @@ mediator.unsubscribe(channels[, callback])
 ```
 
 **chanels**  
-*Type*: String  
-A white space delimited string as the mediator channel names.
+*Type*: String or Array of Strings  
+An Array of strings or a white space delimited string as the mediator channel names.
 
 **callback** *(Optional)*  
 *Type*: Function  

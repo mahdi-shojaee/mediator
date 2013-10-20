@@ -2,6 +2,10 @@
 	var mediator = {},
 		cache = {};
 
+	var _isArray = function(obj) {
+    	return toString.call(obj) == '[object Array]';
+  	};
+
 	// Returns a promise of all the promises returned from subscribers callbacks.
 	// If a promise fails, the result promise will not be reject and continue waiting
 	// for other promises.
@@ -60,7 +64,7 @@
 	};
 
 	mediator.subscribe = function (channels, callback, context) {
-		channels = channels.split(/\s+/) || [];
+		channels = _isArray(channels) ? channels : (channels.split(/\s+/) || []);
 
 		for (var i = 0, len = channels.length; i < len; i++) {
 			var channel = channels[i];
@@ -74,7 +78,7 @@
 	};
 
 	mediator.unsubscribe = function (channels, callback) {
-		channels = channels.split(/\s+/) || [];
+		channels = _isArray(channels) ? channels : (channels.split(/\s+/) || []);
 
 		for (var i = 0, len = channels.length; i < len; i++) {
 			var channel = channels[i];
