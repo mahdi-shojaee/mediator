@@ -18,16 +18,16 @@ How to use?
 
 ###mediator.subscribe
 
-Add a subscriber callback for the white space delimited channels that will be called with the specified context (if any).
+Add a subscriber callback for the channel that will be called with the specified context (if any).
 If context is not specified, mediator itself will be use.
 
 ```javascript
-mediator.subscribe(channels, callback[, context]);
+mediator.subscribe(channel, callback[, context]);
 ```
 
-**channels**  
+**channel**  
 *Type*: String  
-A white space delimited string as the mediator channel names.
+Any string as the mediator channel name.
 
 **callback**  
 *Type*: Function  

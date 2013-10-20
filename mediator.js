@@ -59,18 +59,12 @@
 		return deferred.promise();
 	};
 
-	mediator.subscribe = function (channels, callback, context) {
-		channels = channels.split(/\s+/) || [];
-
-		for (var i = 0, len = channels.length; i < len; i++) {
-			var channel = channels[i];
-			
-			if (!cache[channel]) {
-				cache[channel] = [];
-			}
-
-			cache[channel].push({ callback: callback, context: context });
+	mediator.subscribe = function (channel, callback, context) {
+		if (!cache[channel]) {
+			cache[channel] = [];
 		}
+
+		cache[channel].push({ callback: callback, context: context });
 	};
 
 	mediator.unsubscribe = function (channel, callback) {
