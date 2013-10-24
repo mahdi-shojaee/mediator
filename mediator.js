@@ -39,7 +39,7 @@
 
 			for (var i = 0, len = subscribers.length; i < len; i++) {
 				var subscriber = subscribers[i],
-					result = subscriber.callback.apply(subscriber.context || that, args);
+					result = subscriber.callback.apply(subscriber.context || that, args.concat(channel));
 
 				if (result === false) {
 					break;
