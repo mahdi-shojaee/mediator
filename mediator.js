@@ -3,8 +3,8 @@
 		cache = {};
 
 	var _isArray = function(obj) {
-    	return toString.call(obj) == '[object Array]';
-  	};
+		return Object.prototype.toString.call(obj) === '[object Array]';
+	};
 
 	// Returns a promise of all the promises returned from subscribers callbacks.
 	// If a promise fails, the result promise will not be reject and continue waiting
