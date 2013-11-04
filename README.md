@@ -32,7 +32,7 @@ An Array of strings or a white space delimited string as the mediator channel na
 **callback**  
 *Type*: Function  
 Callback function that invokes on a `publish` with the specified channel.
-All the parameters that passed to `publish` method will be arguments of this callback function.
+All the parameters that passed to `publish` method will be arguments of this callback function plus the published channel string.
 
 **context** *(Optional)*  
 *Type*: any JavaScript valid type  
