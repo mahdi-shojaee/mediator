@@ -1,122 +1,135 @@
+/* jshint -W117 */
 (function (window, undefined) {
-	var mediator = {},
-		cache = {};
+	"use strict";
 
-	var _isArray = function(obj) {
+	var _isArray = function (obj) {
 		return Object.prototype.toString.call(obj) === '[object Array]';
-	};
+	},
 
-	// Returns a promise of all the promises returned from subscribers callbacks.
-	// If a promise fails, the result promise will not be reject and continue waiting
-	// for other promises.
-	// The result promise will be resolve if the return promises of all the
-	// subscribers resolves, and reject otherwise.
-	mediator.publish = function (channel) {
-		var that = this,
-		deferred = $.Deferred(),
-		promises = 0,
-		finishedPromises = 0,
-		faileds = 0,
-		subscribers = cache[channel],
-		args = Array.prototype.slice.call(arguments, 1);
+	fn = function ($) {
+		var mediator = {},
+			cache = {};
 
-		if (subscribers) {
-			var checkFinished = function () {
-				++finishedPromises;
-				
-				// Continue on failure
-				if (finishedPromises === promises) {
-					faileds ? deferred.reject() : deferred.resolve();
-				}
+		// Returns a promise of all the promises returned from subscribers callbacks.
+		// If a promise fails, the result promise will not be reject and continue waiting
+		// for other promises.
+		// The result promise will be resolve if the return promises of all the
+		// subscribers resolves, and reject otherwise.
+		mediator.publish = function (channel) {
+			var that = this,
+			deferred = $.Deferred(),
+			promises = 0,
+			finishedPromises = 0,
+			faileds = 0,
+			subscribers = cache[channel],
+			args = Array.prototype.slice.call(arguments, 1);
 
-				// Break on failure
-				// if (faileds) {
-				// 	deferred.reject();
-				// } else if (finishedPromises === promises) {
-				// 	deferred.resolve();
-				// }
-			};
+			if (subscribers) {
+				var checkFinished = function () {
+					++finishedPromises;
+					
+					// Continue on failure
+					if (finishedPromises === promises) {
+						if (faileds) {
+							deferred.reject();
+						} else {
+							deferred.resolve();
+						}
+					}
 
-			for (var i = 0, len = subscribers.length; i < len; i++) {
-				var subscriber = subscribers[i],
-					result = subscriber.callback.apply(subscriber.context || that, args.concat(channel));
+					// Break on failure
+					// if (faileds) {
+					// 	deferred.reject();
+					// } else if (finishedPromises === promises) {
+					// 	deferred.resolve();
+					// }
+				},
 
-				if (result === false) {
-					break;
-				}
+				callbackFail = function () {
+					++faileds;
+					checkFinished();
+				};
 
-				if (result && typeof result.then === 'function') {
-					++promises;
+				for (var i = 0, len = subscribers.length; i < len; i++) {
+					var subscriber = subscribers[i],
+						result = subscriber.callback.apply(subscriber.context || that, args.concat(channel));
 
-					result.then(checkFinished, function () {
-						++faileds;
-						checkFinished();
-					});
-				}
-			}
-		}
+					if (result === false) {
+						break;
+					}
 
-		if (!promises) {
-			deferred.resolve();
-		}
-
-		return deferred.promise();
-	};
-
-	mediator.subscribe = function (channels, callback, context) {
-		channels = _isArray(channels) ? channels : (channels.split(/\s+/) || []);
-
-		for (var i = 0, len = channels.length; i < len; i++) {
-			var channel = channels[i];
-
-			if (!cache[channel]) {
-				cache[channel] = [];
-			}
-
-			cache[channel].push({ callback: callback, context: context });
-		}
-	};
-
-	mediator.unsubscribe = function (channels, callback) {
-		channels = _isArray(channels) ? channels : (channels.split(/\s+/) || []);
-
-		for (var i = 0, len = channels.length; i < len; i++) {
-			var channel = channels[i];
-
-			if (!callback) {
-				delete cache[channel];
-				return;
-			}
-
-			var subscribers = cache[channel];
-
-			if (!subscribers) {
-				throw 'Channel "' + channel + '" was not subscribed previously!';
-			}
-
-			var newSubscribers = [];
-
-			for (var i = 0, len = subscribers.length; i < len; i++) {
-				if (subscribers[i].callback !== callback) {
-					newSubscribers.push(subscribers[i]);
+					if (result && typeof result.then === 'function') {
+						++promises;
+						result.then(checkFinished, callbackFail);
+					}
 				}
 			}
 
-			if (newSubscribers.length > 0) {
-				cache[channel] = newSubscribers;
-			} else {
-				delete cache[channel];
+			if (!promises) {
+				deferred.resolve();
 			}
-		}
+
+			return deferred.promise();
+		};
+
+		mediator.subscribe = function (channels, callback, context) {
+			channels = _isArray(channels) ? channels : (channels.split(/\s+/) || []);
+
+			for (var i = 0, len = channels.length; i < len; i++) {
+				var channel = channels[i];
+
+				if (!cache[channel]) {
+					cache[channel] = [];
+				}
+
+				cache[channel].push({ callback: callback, context: context });
+			}
+		};
+
+		mediator.unsubscribe = function (channels, callback) {
+			var i, k, len, channel, subscribers, newSubscribers;
+			channels = _isArray(channels) ? channels : (channels.split(/\s+/) || []);
+
+			for (i = 0, len = channels.length; i < len; i++) {
+				channel = channels[i];
+
+				if (!callback) {
+					delete cache[channel];
+					return;
+				}
+
+				subscribers = cache[channel];
+
+				if (!subscribers) {
+					throw 'Channel "' + channel + '" was not subscribed previously!';
+				}
+
+				newSubscribers = [];
+
+				for (k = 0, len = subscribers.length; k < len; k++) {
+					if (subscribers[k].callback !== callback) {
+						newSubscribers.push(subscribers[k]);
+					}
+				}
+
+				if (newSubscribers.length > 0) {
+					cache[channel] = newSubscribers;
+				} else {
+					delete cache[channel];
+				}
+			}
+		};
+
+		return mediator;
 	};
 
 	if (typeof module === "object" && module && typeof module.exports === "object") {
-		module.exports = mediator;
+		module.exports = fn($);
 	} else {
-		window.mediator = mediator;
+		window.mediator = fn($);
 
 		if (typeof define === "function" && define.amd) {
-			define("mediator", [], function () { return mediator; });
+			define("mediator", ['jquery'], fn);
 		}
 	}
 })(window);
