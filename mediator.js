@@ -124,11 +124,11 @@
 	};
 
 	if (typeof module === "object" && module && typeof module.exports === "object") {
-		module.exports = fn($);
+		module.exports = fn(jQuery);
 	} else {
-		window.mediator = fn($);
+		window.mediator = fn(jQuery);
 
-		if (typeof define === "function" && define.amd) {
+		if (typeof define === "function" && define.amd && define.amd.jQuery) {
 			define("mediator", ['jquery'], fn);
 		}
 	}
