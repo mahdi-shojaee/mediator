@@ -126,7 +126,9 @@
 	if (typeof module === "object" && module && typeof module.exports === "object") {
 		module.exports = function (jQuery) { return fn(jQuery); };
 	} else {
-		window.mediator = fn(window.jQuery);
+		if (window.jQuery) {
+			window.mediator = fn(window.jQuery);
+		}
 
 		if (typeof define === "function" && define.amd && define.amd.jQuery) {
 			define("mediator", ['jquery'], fn);
