@@ -87,10 +87,10 @@
 		};
 
 		mediator.unsubscribe = function (channels, callback) {
-			var i, k, len, channel, subscribers, newSubscribers;
+			var i, k, channelsLength, subscribersLength, channel, subscribers, newSubscribers;
 			channels = _isArray(channels) ? channels : (channels.split(/\s+/) || []);
 
-			for (i = 0, len = channels.length; i < len; i++) {
+			for (i = 0, channelsLength = channels.length; i < channelsLength; i++) {
 				channel = channels[i];
 
 				if (!callback) {
@@ -106,7 +106,7 @@
 
 				newSubscribers = [];
 
-				for (k = 0, len = subscribers.length; k < len; k++) {
+				for (k = 0, subscribersLength = subscribers.length; k < subscribersLength; k++) {
 					if (subscribers[k].callback !== callback) {
 						newSubscribers.push(subscribers[k]);
 					}
@@ -124,9 +124,9 @@
 	};
 
 	if (typeof module === "object" && module && typeof module.exports === "object") {
-		module.exports = fn(jQuery);
+		module.exports = function (jQuery) { return fn(jQuery); };
 	} else {
-		window.mediator = fn(jQuery);
+		window.mediator = fn(window.jQuery);
 
 		if (typeof define === "function" && define.amd && define.amd.jQuery) {
 			define("mediator", ['jquery'], fn);
