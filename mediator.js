@@ -1,5 +1,5 @@
 /* jshint -W117 */
-(function (window, undefined) {
+(function (undefined) {
 	"use strict";
 
 	var _isArray = function (obj) {
@@ -134,4 +134,4 @@
 			define("mediator", ['jquery'], fn);
 		}
 	}
-})(window);
+})();
